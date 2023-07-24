@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "express": "^4.18.2",
+    "mongoose": "^7.4.1"
+  },
+  "name": "facespace-backend",
+  "description": "Repo for Module 18",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {},
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/james661/Facespace-Backend.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/james661/Facespace-Backend/issues"
+  },
+  "homepage": "https://github.com/james661/Facespace-Backend#readme"
+}
