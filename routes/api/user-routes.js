@@ -6,7 +6,7 @@ const {
   createUser,
   updateUser,
   deleteUser,
-  deleteThoughts,
+  // deleteThoughts,
   addFriend,
   deleteFriend,
 

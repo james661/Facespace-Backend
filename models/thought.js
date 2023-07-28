@@ -32,7 +32,6 @@ ThoughtSchema.virtual('reactionCount').get(function() {
   return this.reactions.length;
 });
 
-module.exports = Thoughts;
 
 const reactionSchema = new Schema(
   {
@@ -61,3 +60,5 @@ const reactionSchema = new Schema(
     }
   }
 );
+
+  module.exports = Thoughts;
