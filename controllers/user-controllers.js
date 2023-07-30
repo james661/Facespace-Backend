@@ -1,6 +1,6 @@
 const { User, Thoughts } = require('../models');
 
-const userController = {
+const userControllers = {
   const getAllUsers = (req, res) => {
     User.find({})
       .populate({ path: 'thoughts', select: '__v' })
@@ -95,4 +95,4 @@ const userController = {
   }
 };
 
-module.exports = userController;
+module.exports = userControllers;
