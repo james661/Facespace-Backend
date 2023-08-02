@@ -2,12 +2,14 @@ const { Schema, model } = require('mongoose');
 
 const ThoughtSchema = new Schema(
   {
+    // Schema for thoughts, with length requirements
     thoughText: {
       type: String,
       required: true,
       minLength: 1,
       maxLength: 280
     },
+    // 
     createdAt: {
       type: Date,
       default: Date.now,
@@ -27,12 +29,12 @@ const ThoughtSchema = new Schema(
 );
 
 const Thoughts = model('Thoughts', ThoughtSchema);
-
+// virtual to retrieve the length of the thought reactions
 ThoughtSchema.virtual('reactionCount').get(function() {
   return this.reactions.length;
 });
 
-
+// Schema for reaction assets
 const reactionSchema = new Schema(
   {
     reactionId: {

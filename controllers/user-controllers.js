@@ -1,6 +1,7 @@
 const { User, Thoughts } = require('../models');
 
 const userControllers = {
+  // function to find all users
   const getAllUsers = (req, res) => {
     User.find({})
       .populate({ path: 'thoughts', select: '__v' })
@@ -12,6 +13,7 @@ const userControllers = {
         res.status(500).json(err);
       });
   },
+  // function to get a single user
   const getUserById = ({ params }, res) => {
     User.findOne({ _id: params.id })
       .populate({ path: 'thoughts', select: '__v' })
@@ -24,6 +26,7 @@ const userControllers = {
         return res.status(500).json(err);
       });
   },
+  // function to create a user
   const createUser = ({ body }, res) => {
     User.create(body)
       .then(dbUserData => res.json(dbUserData))
@@ -32,6 +35,7 @@ const userControllers = {
         res.status(500).json(err);
         });
   },
+  // function to change an existing user
   const updateUser = ({ params, body }, res) => {
     User.findOneAndUpdate(
       { _id: params.id },
@@ -45,6 +49,7 @@ const userControllers = {
         return res.status(500).json(err);
       });
   },
+  // function to remove a user
   const deleteUser = ({ params }, res) => {
     User.findByIdAndDelete({ _id: params.id })
       .then(dbUserData => {
@@ -65,6 +70,7 @@ const userControllers = {
           res.status(500).json(err);
         });
   },
+  // function to add a friend
   const addFriend = ({ params }, res) => {
     User.findOneAndUpdate(
       { _id: params.userId },
@@ -79,6 +85,7 @@ const userControllers = {
       return res.status(500).json(err);
     });
   },
+  // function to remove a friend
   const deleteFriend = ({ params }, res) => {
     User.findOneAndUpdate(
       { _id: params.userId },
@@ -94,5 +101,5 @@ const userControllers = {
     });
   }
 };
-
+// export the controllers
 module.exports = userControllers;
