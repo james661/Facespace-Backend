@@ -1,26 +1,24 @@
 // Require the necessary dependencies
-const { Thought, user } = require('../models');
-const Thoughts = require('../models/thought');
+const { Thought, User } = require('../models');
+// const Thoughts = require('../models/thought');
 
 thoughtControllers = {
   // function to get all thoughts
-  getAllThoughts(req, res) {
-    // The find({}) method retrieves from the database using an empty object, which acts as a wildcard
-    Thoughts.find({}).populate({
-      path: 'reactions',
-      select: '__v'
-    })
-    .select('__v').then(dbThoughtsData => {
-      res.json(dbThoughtsData);
-    })
-    .catch(err => {
-      console.log(err);
-      res.status(500).json(err);
-    });
+  async getAllThoughts (req, res) {
+    try {
+      const dbThoughtsData = await Thought.find()
+        .sort({ createdAt: -1 })
+
+      res.json(dbThoughtsData)
+    } catch (err) {
+      console.log(err)
+      res.status(500).json(err)
+    }
   },
+
   // function to get a single thought
   getThoughtById({ params }, res) {
-    Thoughts.findOne({ _id: params.id }).populate({
+    Thought.findOne({ _id: params.id }).populate({
       path: 'reactions',
       // versionkey that allows better abstraction when using Mongo
       select: '__v'
@@ -36,10 +34,11 @@ thoughtControllers = {
   },
   // function to create a thought
   createThought({ body }, res) {
-    Thoughts.create(body).then(({ username, _id }) => {
+    Thought.create(body).then(({ username, _id }) => {
       return User.fundOneAndUpdate(
         // finds the user which it is associated and adds a thought ID
         { username: username },
+        // We use push for arrays
         { $push: { thoughts: _id }},
         { new: true }
       )
@@ -54,7 +53,7 @@ thoughtControllers = {
   },
   // function to edit a thought
   updateThought({ body, params }, res) {
-    Thoughts.findOneAndUpdate({ _id: params.id }, body, { new: true })
+    Thought.findOneAndUpdate({ _id: params.id }, body, { new: true })
       .then(dbThoughtsData => {
         res.json(dbThoughtsData);
       })
@@ -64,9 +63,9 @@ thoughtControllers = {
       });
   },
   // function to remove a thought
-  deleteThoughts({ params }, res) {
-    Thoughts.findOneAndDelete({ _id: params.id })
-      .then({ username } => {
+  deleteThought({ params }, res) {
+    Thought.findOneAndDelete({ _id: params.id })
+      .then(({ username }) => {
         return User.findOneAndUpdate(
           // finds the thought with its ID and associated user
           { username: username },
@@ -84,7 +83,7 @@ thoughtControllers = {
   },
   // function to create a reaction
   createReaction({ params, body }, res) {
-    Thoughts.findOneAndUpdate(
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $push: { reactions: body }},
       { new: true }
@@ -99,7 +98,7 @@ thoughtControllers = {
   },
   // function to removed a reaction
   deleteReaction({ params }, res) {
-    Thoughts.findOneAndUpdate(
+    Thought.findOneAndUpdate(
       { _id: params.thoughtId },
       { $pull: { reactions: { reactionId: params.reactionId}}},
       { new: true }

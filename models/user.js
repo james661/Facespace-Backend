@@ -1,4 +1,4 @@
-const { Schema, model } = require('mongoose');
+const { Schema, Types, model } = require('mongoose');
 
 const UserSchema = new Schema(
   {
@@ -12,7 +12,7 @@ const UserSchema = new Schema(
       type: String,
       required: true,
       unique: true,
-      match:  [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/];
+      match:  [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/],
     },
     thoughts: [
       {
